@@ -10,6 +10,4 @@ int main()
 
 	lsquic_global_cleanup();
 	exit(EXIT_SUCCESS);
-
-	return 0;
 }

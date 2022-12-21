@@ -1,15 +1,12 @@
 #include "stdinc.h"
-
+#include "../public/engine.h"
 
 int main()
 {
-	if (0 != lsquic_global_init(LSQUIC_GLOBAL_CLIENT | LSQUIC_GLOBAL_SERVER))
-	{
-		exit(EXIT_FAILURE);
-	}
+	Engine engine(true, false);
+	engine.start();
 
-	lsquic_global_cleanup();
-	exit(EXIT_SUCCESS);
+	std::this_thread::sleep_for(std::chrono::seconds(60));
 
 	return 0;
 }
