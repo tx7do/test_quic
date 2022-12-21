@@ -1,0 +1,21 @@
+[submodule "third_party/lsquic"]
+	path = third_party/lsquic
+	url = https://github.com/litespeedtech/lsquic
+[submodule "third_party/quiche"]
+	path = third_party/quiche
+	url = https://github.com/google/quiche
+[submodule "third_party/boringssl"]
+	path = third_party/boringssl
+	url = https://github.com/ClickHouse/boringssl
+[submodule "third_party/zlib-ng"]
+	path = third_party/zlib-ng
+	url = https://github.com/ClickHouse/zlib-ng
+[submodule "third_party/libevent"]
+	path = third_party/libevent
+	url = https://github.com/libevent/libevent
+[submodule "third_party/libuv"]
+	path = third_party/libuv
+	url = https://github.com/ClickHouse/libuv
+[submodule "third_party/boost"]
+	path = third_party/boost
+	url = https://github.com/ClickHouse/boost
