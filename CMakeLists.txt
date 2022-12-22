@@ -37,4 +37,6 @@ option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 add_subdirectory(third_party EXCLUDE_FROM_ALL)
-add_subdirectory(echo)
+
+add_subdirectory(libevent)
+add_subdirectory(asio)

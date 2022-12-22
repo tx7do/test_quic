@@ -8,32 +8,15 @@
 #include <lsquic.h>
 
 #include "event_ex.h"
+#include "config.h"
+#include "packets.h"
 
 struct event_base;
 struct event;
 
-struct lsquic_engine;
-struct lsquic_engine_settings;
-struct lsquic_engine_api;
-struct lsquic_hset_if;
-struct lsquic_stream_if;
-struct lsquic_stream;
-
 struct ssl_ctx_st;
 struct ssl_st;
 struct ssl_session_st;
-
-#define SOCKOPT_VAL int
-#define SOCKET_TYPE int
-
-enum sport_flags : std::int32_t
-{
-	SPORT_FRAGMENT_OK = (1 << 0),
-	SPORT_SET_SNDBUF = (1 << 1), /* SO_SNDBUF */
-	SPORT_SET_RCVBUF = (1 << 2), /* SO_RCVBUF */
-	SPORT_SERVER = (1 << 3),
-	SPORT_CONNECT = (1 << 4),
-};
 
 class Engine
 {
@@ -127,6 +110,8 @@ private:
 
 	SOCKOPT_VAL _sndbuf{ -1 };   /* If SPORT_SET_SNDBUF is set */
 	SOCKOPT_VAL _rcvbuf{ -1 };   /* If SPORT_SET_RCVBUF is set */
+
+	struct packets_in* _packs_in;
 
 private:
 	struct lsquic_engine_settings* _engine_settings{ nullptr };

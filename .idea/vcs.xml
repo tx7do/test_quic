@@ -2,5 +2,14 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third_party/boost" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third_party/boringssl" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third_party/libevent" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third_party/libuv" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third_party/lsquic" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third_party/lsquic/src/liblsquic/ls-qpack" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third_party/lsquic/src/lshpack" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third_party/quiche" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third_party/zlib-ng" vcs="Git" />
   </component>
 </project>

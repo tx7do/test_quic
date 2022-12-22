@@ -143,7 +143,6 @@ void Engine::stopThread()
 
 	_thread->join();
 	_thread.reset();
-	_thread = nullptr;
 }
 
 bool Engine::startEventLoop()
@@ -167,12 +166,16 @@ bool Engine::startEventLoop()
 
 bool Engine::stopEventLoop()
 {
+	remove_event_timer();
+	remove_event_socket();
+
 	if (_base != nullptr)
 	{
 		::event_base_loopbreak(_base);
 		::event_base_free(_base);
 		_base = nullptr;
 	}
+
 	return true;
 }
 
@@ -344,7 +347,15 @@ bool Engine::startQuicServer()
 //		return false;
 //	}
 
+	_packs_in = allocate_packets_in(sockfd);
+	if (!_packs_in)
+	{
+		CLOSE_SOCKET(sockfd);
+		return false;
+	}
+
 	_sockfd = sockfd;
+
 	_sp_flags |= SPORT_SERVER;
 
 	add_event_socket();
@@ -401,17 +412,24 @@ bool Engine::initQuicSetting(uint32_t engineFlags)
 
 void Engine::on_ev_connect(SOCKET_TYPE sockfd, short event, void* arg)
 {
+	auto engine_ = reinterpret_cast<Engine*>(arg);
+	assert(engine_);
 }
 
 void Engine::on_ev_read(SOCKET_TYPE sockfd, short event, void* arg)
 {
+	auto engine_ = reinterpret_cast<Engine*>(arg);
+	assert(engine_);
 
+	auto lsquic_engine = engine_->_engine;
+	auto packs_in = engine_->_packs_in;
 }
 
 void Engine::on_ev_timer(SOCKET_TYPE sockfd, short event, void* arg)
 {
 	auto engine_ = reinterpret_cast<Engine*>(arg);
 	assert(engine_);
+
 	engine_->onProcessConnect();
 }
 
