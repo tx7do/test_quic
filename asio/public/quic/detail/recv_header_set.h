@@ -3,7 +3,7 @@
 #include <vector>
 #include <lsxpack_header.h>
 
-#include "../include/h3/h3_fields.h"
+#include "../../h3/h3_fields.h"
 
 
 namespace quic::detail

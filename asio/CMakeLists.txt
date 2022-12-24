@@ -1,2 +1,5 @@
+add_subdirectory(public)
 add_subdirectory(server)
 add_subdirectory(client)
+add_subdirectory(h3cli)
+add_subdirectory(unitest)

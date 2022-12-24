@@ -1,5 +1,5 @@
 # 项目名称
-project(asio_client)
+project(h3cli)
 
 include_directories(../public)
 
