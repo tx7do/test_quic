@@ -38,7 +38,7 @@ namespace quic::detail::connection_state
 	{
 		const sockaddr* l = nullptr;
 		const sockaddr* r = nullptr;
-		lsquic_conn_get_sockaddr(handle, &l, &r);
+		::lsquic_conn_get_sockaddr(handle, &l, &r);
 		if (r->sa_family == AF_INET6)
 		{
 			::memcpy(remote, r, sizeof(sockaddr_in6));
@@ -144,6 +144,7 @@ namespace quic::detail::connection_state
 			op.post(make_error_code(errc::bad_file_descriptor));
 			return false;
 		}
+
 		auto& o = *std::get_if<open>(&state);
 		stream_state::connect(op.stream.state, op);
 		o.connecting_streams.push_back(op.stream);
@@ -151,8 +152,7 @@ namespace quic::detail::connection_state
 		return true;
 	}
 
-	stream_impl* on_stream_connect(variant& state, lsquic_stream_t* handle,
-		bool is_http)
+	stream_impl* on_stream_connect(variant& state, lsquic_stream_t* handle, bool is_http)
 	{
 		assert(std::holds_alternative<open>(state));
 		auto& o = *std::get_if<open>(&state);
@@ -198,8 +198,7 @@ namespace quic::detail::connection_state
 		o.accepting_streams.push_back(op.stream);
 	}
 
-	stream_impl* on_stream_accept(variant& state, lsquic_stream* handle,
-		bool is_http)
+	stream_impl* on_stream_accept(variant& state, lsquic_stream* handle, bool is_http)
 	{
 		assert(std::holds_alternative<open>(state));
 		auto& o = *std::get_if<open>(&state);
@@ -215,6 +214,7 @@ namespace quic::detail::connection_state
 			}
 			return nullptr;
 		}
+
 		auto& s = o.accepting_streams.front();
 		list_transfer(s, o.accepting_streams, o.open_streams);
 		stream_state::on_accept(s.state, handle, is_http);
@@ -377,28 +377,36 @@ namespace quic::detail::connection_state
 			{
 				op->defer(aborted);
 			}
+
 			state = closed{};
 			return transition::accepting_to_closed;
 		}
 		if (std::holds_alternative<open>(state))
 		{
 			auto& o = *std::get_if<open>(&state);
+
 			abort_streams(o, aborted);
 			::lsquic_conn_abort(&o.handle);
+
+			::lsquic_conn_set_ctx(&o.handle, nullptr);
+
 			state = closed{};
 			return transition::open_to_closed;
 		}
 		if (std::holds_alternative<going_away>(state))
 		{
 			auto& g = *std::get_if<going_away>(&state);
+
 			abort_streams(g, aborted);
 			::lsquic_conn_abort(&g.handle);
+
 			state = closed{};
 			return transition::going_away_to_closed;
 		}
 		if (std::holds_alternative<error>(state))
 		{
 			ec = std::get_if<error>(&state)->ec;
+
 			state = closed{};
 			return transition::error_to_closed;
 		}

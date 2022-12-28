@@ -20,9 +20,9 @@ namespace quic::detail
 							 public boost::intrusive::list_base_hook<>,
 							 public service_list_base_hook
 	{
-		service<connection_impl>& svc;
-		socket_impl& socket;
-		connection_state::variant state;
+		service<connection_impl>& _svc;
+		socket_impl& _socket;
+		connection_state::variant _state;
 
 		explicit connection_impl(socket_impl& socket);
 		~connection_impl();

@@ -9,7 +9,7 @@ namespace quic::detail
 {
 
 	stream_impl::stream_impl(connection_impl& conn)
-		: engine(conn.socket.engine),
+		: engine(conn._socket.engine),
 		  svc(boost::asio::use_service<service<stream_impl >>
 			  (
 				  boost::asio::query(engine.get_executor(), boost::asio::execution::context)

@@ -108,7 +108,7 @@ namespace quic::detail
 		if (cctx)
 		{
 			auto c = reinterpret_cast<connection_impl*>(cctx);
-			c->socket.on_connect(*c, conn);
+			c->_socket.on_connect(*c, conn);
 			return cctx;
 		}
 

@@ -111,8 +111,7 @@ namespace quic::detail
 			  handler(std::move(handler)),
 			  ex(boost::asio::prefer(get_associated_executor(this->handler, io_ex),
 					  boost::asio::execution::outstanding_work.tracked),
-				  boost::asio::prefer(io_ex,
-					  boost::asio::execution::outstanding_work.tracked))
+				  boost::asio::prefer(io_ex, boost::asio::execution::outstanding_work.tracked))
 		{
 		}
 
@@ -193,7 +192,7 @@ namespace quic::detail
 	using stream_connect_async = async_operation<stream_connect_operation, Handler, IoExecutor>;
 
 
-// stream accept
+	// stream accept
 	struct stream_accept_operation : operation<error_code>
 	{
 		stream_impl& stream;
@@ -227,7 +226,7 @@ namespace quic::detail
 	using stream_data_async = async_operation<stream_data_operation, Handler, IoExecutor>;
 
 
-// stream header reads
+	// stream header reads
 	struct stream_header_read_operation : operation<error_code>
 	{
 		h3::fields& fields;
@@ -243,7 +242,7 @@ namespace quic::detail
 	using stream_header_read_async = async_operation<stream_header_read_operation, Handler, IoExecutor>;
 
 
-// stream header writes
+	// stream header writes
 	struct stream_header_write_operation : operation<error_code>
 	{
 		const h3::fields& fields;
@@ -260,7 +259,7 @@ namespace quic::detail
 	using stream_header_write_async = async_operation<stream_header_write_operation, Handler, IoExecutor>;
 
 
-// stream close
+	// stream close
 	struct stream_close_operation : operation<error_code>
 	{
 		explicit stream_close_operation(complete_fn complete) noexcept

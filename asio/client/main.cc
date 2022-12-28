@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+
 #include <boost/asio.hpp>
 #include <boost/intrusive_ptr.hpp>
 #include <boost/smart_ptr/intrusive_ref_counter.hpp>
@@ -8,12 +9,6 @@
 #include "quic/quic_client.h"
 #include "quic/quic_connection.h"
 #include "quic/quic_stream.h"
-
-// echo client takes one or more input files, writes each file in parallel
-// to a different stream and reads back their echos for display to stdout.
-// because the streams are multiplexed, the output from multiple files will be
-// mixed together; however, running against a server with max-streams=1 will
-// display their output in sequential order
 
 namespace
 {
@@ -104,7 +99,7 @@ namespace
 				}
 				else
 				{
-					write_file(std::move(stream));
+					write_file(stream);
 				}
 			});
 	}
@@ -128,7 +123,7 @@ namespace
 				// write the output bytes then start reading more
 				auto& data = stream->readbuf;
 				stream->output.write(data.data(), bytes);
-				read_file(std::move(stream));
+				read_file(stream);
 			});
 	}
 
@@ -170,7 +165,7 @@ int main(int argc, char** argv)
 				return;
 			}
 			write_file(s);
-			read_file(std::move(s));
+			read_file(s);
 		});
 	}
 	conn.reset(); // let the connection close once all streams are done

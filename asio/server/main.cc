@@ -1,9 +1,11 @@
 #include <charconv>
 #include <iostream>
 #include <optional>
+
 #include <boost/asio.hpp>
 #include <boost/intrusive_ptr.hpp>
 #include <boost/smart_ptr/intrusive_ref_counter.hpp>
+
 #include <openssl/ssl.h>
 
 #include "global/global_init.h"
@@ -11,9 +13,6 @@
 #include "quic/quic_server.h"
 #include "quic/quic_settings.h"
 #include "quic/quic_stream.h"
-
-// echo server that accepts connections and their streams, writing back
-// anything it reads on each stream
 
 namespace
 {

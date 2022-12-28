@@ -77,7 +77,7 @@ namespace quic
 			const udp::endpoint& endpoint,
 			const char* hostname)
 		{
-			assert(&c.socket == this);
+			assert(&c._socket == this);
 			auto lock = std::unique_lock{ engine.mutex };
 			auto peer_ctx = this;
 			auto cctx = reinterpret_cast<lsquic_conn_ctx_t*>(&c);
@@ -85,14 +85,14 @@ namespace quic
 				local_addr.data(), endpoint.data(), peer_ctx, cctx,
 				hostname, 0, nullptr, 0, nullptr, 0);
 
-			assert(connection_state::is_open(c.state));
+			assert(connection_state::is_open(c._state));
 			engine.process(lock);
 			start_recv();
 		}
 
 		void socket_impl::on_connect(connection_impl& c, lsquic_conn_t* conn)
 		{
-			connection_state::on_connect(c.state, conn);
+			connection_state::on_connect(c._state, conn);
 			open_connections.push_back(c);
 		}
 
@@ -107,11 +107,11 @@ namespace quic
 
 				auto ctx = reinterpret_cast<lsquic_conn_ctx_t*>(&c);
 				::lsquic_conn_set_ctx(incoming.handle, ctx);
-				connection_state::accept_incoming(c.state, std::move(incoming));
+				connection_state::accept_incoming(c._state, std::move(incoming));
 				op.post(error_code{}); // success
 				return;
 			}
-			connection_state::accept(c.state, op);
+			connection_state::accept(c._state, op);
 			accepting_connections.push_back(c);
 			engine.process(lock);
 		}
@@ -132,7 +132,7 @@ namespace quic
 			auto& c = accepting_connections.front();
 			list_transfer(c, accepting_connections, open_connections);
 
-			connection_state::on_accept(c.state, conn);
+			connection_state::on_accept(c._state, conn);
 			return &c;
 		}
 
@@ -149,14 +149,14 @@ namespace quic
 			{
 				auto& c = open_connections.front();
 				open_connections.pop_front();
-				connection_state::reset(c.state, ec);
+				connection_state::reset(c._state, ec);
 			}
 
 			while (!accepting_connections.empty())
 			{
 				auto& c = accepting_connections.front();
 				accepting_connections.pop_front();
-				connection_state::reset(c.state, ec);
+				connection_state::reset(c._state, ec);
 			}
 		}
 
