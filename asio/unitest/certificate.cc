@@ -219,7 +219,7 @@ namespace test
 		::SSL_CTX_set_max_proto_version(ctx.native_handle(), TLS1_3_VERSION);
 		::SSL_CTX_set_alpn_select_cb(ctx.native_handle(), alpn_select_cb,
 			const_cast<char*>(alpn));
-		self_sign_certificate(ctx, "US", "Nexus", "host", std::chrono::hours(24));
+		self_sign_certificate(ctx, "CN", "QUIC", "host", std::chrono::hours(24));
 		return ctx;
 	}
 
